@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addTodo, updateTodoName } from '../features/todo/todoSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTodo, updateTodo, updateTodoName } from '../features/todo/todoSlice';
 import { PlusCircleIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 
-const AddTodo = ({ isEdit, setIsEdit, id }) => {
+const AddTodo = () => {
     const [input, setInput] = useState('');
     const dispatch = useDispatch();
     const inputRef = useRef(null);
 
+    const { id, isEdit, text } = useSelector((state) => state.updateTodo);
+
     // Auto-focus when editing
     useEffect(() => {
         if (isEdit && inputRef.current) {
-            setInput(id.text);
+            setInput(text);
             inputRef.current.focus();
         } else {
             setInput('');
@@ -24,15 +26,13 @@ const AddTodo = ({ isEdit, setIsEdit, id }) => {
             inputRef.current.focus();
             alert('Enter todo name');
         }
-
         else if (isEdit) {
-            dispatch(updateTodoName({ id: id.id, text: input.trim() }));
+            dispatch(updateTodoName({ id, text: input.trim() }));
+            dispatch(updateTodo({ id: '', text: '', isEdit: false }));
         } else {
             dispatch(addTodo(input.trim()));
         }
-
         setInput('');
-        setIsEdit(false);
     };
 
     return (

@@ -1,19 +1,22 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeTodo, completedTodo } from '../features/todo/todoSlice';
+import { removeTodo, completedTodo, updateTodo } from '../features/todo/todoSlice';
 import {
     CheckCircleIcon,
     PencilSquareIcon,
     TrashIcon,
 } from '@heroicons/react/24/solid';
 
-const Todos = ({ isEdit, setIsEdit, setId }) => {
+const Todos = () => {
 
     const completedTodos = useSelector((state) => state.completedTodos);
     const pendingTodos = useSelector((state) => state.pendingTodos);
     const dispatch = useDispatch();
     const totalTodos = [...completedTodos, ...pendingTodos];
     totalTodos.reverse();
+
+    const { isEdit } = useSelector((state) => state.updateTodo);
+
     return (
         <div className="flex flex-col gap-3">
             {totalTodos.length === 0 ? (
@@ -38,10 +41,12 @@ const Todos = ({ isEdit, setIsEdit, setId }) => {
                         {/* Buttons */}
                         <div className="flex gap-2 mt-3 sm:mt-0">
                             <button
-                                onClick={() => { dispatch(completedTodo(todo.id)); setIsEdit(false) }}
+                                onClick={() => { dispatch(completedTodo(todo.id)); dispatch(updateTodo({ id: '', text: '', isEdit: false })) }}
                                 className={`flex items-center gap-1 bg-green-500 hover:bg-green-600 
-                            text-white text-sm font-semibold px-3 py-1.5 rounded-lg 
-                            shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95`}
+                            text-white text-sm font-semibold px-3 py-1.5 rounded-lg cursor-pointer
+                            shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95
+                            disabled:bg-gray-400 disabled:cursor-not-allowed`}
+                                disabled={todo.status}
                             >
                                 <CheckCircleIcon className="h-4 w-4 text-white" />
                                 <span>Complete</span>
@@ -49,21 +54,22 @@ const Todos = ({ isEdit, setIsEdit, setId }) => {
 
                             <button
                                 onClick={() => {
-                                    setIsEdit(!isEdit);
-                                    setId({ id: todo.id, text: todo.text });
+                                    dispatch(updateTodo({ id: todo.id, text: todo.text, isEdit: !isEdit }))
                                 }}
+                                disabled={todo.status}
                                 className={`flex items-center gap-1 bg-yellow-500 hover:bg-yellow-600 
-                            text-white text-sm font-semibold px-3 py-1.5 rounded-lg 
-                            shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95`}
+                            text-white text-sm font-semibold px-3 py-1.5 rounded-lg cursor-pointer
+                            shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95
+                            disabled:bg-gray-400 disabled:cursor-not-allowed`}
                             >
                                 <PencilSquareIcon className="h-4 w-4 text-white" />
                                 <span>Update</span>
                             </button>
 
                             <button
-                                onClick={() => { dispatch(removeTodo(todo.id)); setIsEdit(false) }}
+                                onClick={() => { dispatch(removeTodo(todo.id)); dispatch(updateTodo({ id: '', text: '', isEdit: false })) }}
                                 className={`flex items-center gap-1 bg-red-500 hover:bg-red-600 
-                            text-white text-sm font-semibold px-3 py-1.5 rounded-lg 
+                            text-white text-sm font-semibold px-3 py-1.5 rounded-lg cursor-pointer
                             shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95`}
                             >
                                 <TrashIcon className="h-4 w-4 text-white" />
