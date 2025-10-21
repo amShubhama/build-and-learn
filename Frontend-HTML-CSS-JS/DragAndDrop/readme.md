@@ -22,4 +22,4 @@ This project helps you understand how modern file uploads work — with smooth U
 
 ## 📸 Demo Screenshot
 
-![Drag and Drop Demo](image.png)
+![Drag and Drop Demo](./image.png)
