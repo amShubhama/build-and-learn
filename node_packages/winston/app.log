@@ -1,0 +1,9 @@
+2025:10:31 12:10:59 [winston] info: login
+2025:10:31 12:10:59 [winston] error: error
+2025:10:31 12:10:59 [winston] warn: warn
+2025:10:31 12:10:51 [winston] info: login
+2025:10:31 12:10:52 [winston] error: error
+2025:10:31 12:10:52 [winston] warn: warn
+2025:10:31 12:10:95 [winston] info: login
+2025:10:31 12:10:96 [winston] error: error
+2025:10:31 12:10:96 [winston] warn: warn
